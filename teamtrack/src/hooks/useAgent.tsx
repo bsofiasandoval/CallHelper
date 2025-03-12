@@ -19,16 +19,18 @@ const useAgent = (file: File | null, transcript: string | null) => {
                     const formData = new FormData();
                     formData.append('file', file);
 
-                    response = await axios.post('http://127.0.0.1:5000/agent', formData, {
+                    response = await axios.post('http://127.0.0.1:4000/agent/pdf', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },
+                        timeout: 30000, // 30 seconds
                     });
                 } else if (transcript) {
-                    response = await axios.post('http://127.0.0.1:5000/agent/text', { transcript }, {
+                    response = await axios.post('http://127.0.0.1:4000/agent/txt', { transcript }, {
                         headers: {
                             'Content-Type': 'application/json',
                         },
+                        timeout: 30000, // 30 seconds
                     });
                 }
 

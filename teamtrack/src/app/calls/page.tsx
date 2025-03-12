@@ -61,7 +61,7 @@ export default function Calls() {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
-      
+
       if (selectedFile.type === "text/plain") {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -89,14 +89,13 @@ export default function Calls() {
       setProgress(i);
       await new Promise((resolve) => setTimeout(resolve, 500));
     }
-    
+
     // Add this line to ensure analysis is triggered
     setAnalysisComplete(true);
   };
-  
+
 
   return (
-    
     <div className="min-h-screen flex flex-col bg-[#fbfbfb]">
       <NavigationLg />
       <main className="flex-1 p-6">
@@ -161,7 +160,7 @@ export default function Calls() {
                 Notas
               </TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="document">
               <Card>
                 <CardHeader>
@@ -170,17 +169,17 @@ export default function Calls() {
                     Documento Original
                   </CardTitle>
                   <CardDescription>
-                    {file?.type === "application/pdf" 
-                      ? "Vista previa del PDF cargado" 
+                    {file?.type === "application/pdf"
+                      ? "Vista previa del PDF cargado"
                       : "Transcripción completa de la llamada"}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="bg-white p-4 rounded-md border border-gray-200 h-[600px] overflow-y-auto">
                     {file?.type === "application/pdf" && pdfUrl ? (
-                      <iframe 
-                        src={pdfUrl} 
-                        className="w-full h-full" 
+                      <iframe
+                        src={pdfUrl}
+                        className="w-full h-full"
                         title="PDF Viewer"
                         style={{ minHeight: "550px" }}
                       />
@@ -194,7 +193,7 @@ export default function Calls() {
                       </div>
                     )}
                   </div>
-                  
+
                   {file && (
                     <div className="mt-4 text-center">
                       <a
@@ -209,19 +208,19 @@ export default function Calls() {
                 </CardContent>
               </Card>
             </TabsContent>
-            
-            
+
+
             <TabsContent value="notes">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center text-[#000000]">
                     <StickyNote className="w-5 h-5 mr-2" />
-                    {data?.title}
+                    {data?.notes.title}
                   </CardTitle>
                   <CardDescription>Resumen de la llamada</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 whitespace-pre-line">{data?.resumen}</p>
+                  <p className="text-gray-700 whitespace-pre-line">{data?.notes.summary}</p>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -232,45 +231,67 @@ export default function Calls() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center text-[#000000]">
-                      <BarChart2 className="w-5 h-5 mr-2" />
-                      Sentimientos del Cliente
+                      <StickyNote className="w-5 h-5 mr-2" />
+                      Aspectos Positivos
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <SentimentChart />
+                    <p className="text-gray-700 whitespace-pre-line">{data?.report.positiveFeedback}</p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center text-[#000000]">
-                      <Clock className="w-5 h-5 mr-2" />
-                      Duración de Segmentos
+                      <StickyNote className="w-5 h-5 mr-2" />
+                      Aspectos Negativos
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <DurationChart />
+                    <p className="text-gray-700 whitespace-pre-line">{data?.report.negativeFeedback}</p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center text-[#000000]">
-                      <PieChart className="w-5 h-5 mr-2" />
-                      Distribución de Temas
+                      <StickyNote className="w-5 h-5 mr-2" />
+                      Puntos de Mejora
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <TopicsChart />
+                    <p className="text-gray-700 whitespace-pre-line">{data?.report.improvingPoints}</p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center text-[#000000]">
-                      <Tag className="w-5 h-5 mr-2" />
-                      Palabras Clave
+                      <StickyNote className="w-5 h-5 mr-2" />
+                      Decisiones Clave
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <KeywordsCloud />
+                    <p className="text-gray-700 whitespace-pre-line">{data?.report.keyDecisions}</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center text-[#000000]">
+                      <StickyNote className="w-5 h-5 mr-2" />
+                      Preguntas Planteadas
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-700 whitespace-pre-line">{data?.report.questionsRaised}</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center text-[#000000]">
+                      <StickyNote className="w-5 h-5 mr-2" />
+                      Próximos Pasos
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-700 whitespace-pre-line">{data?.report.nextSteps}</p>
                   </CardContent>
                 </Card>
               </div>
