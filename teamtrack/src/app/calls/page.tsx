@@ -12,6 +12,7 @@ import useAgent from "@/hooks/useAgent";
 import dynamic from "next/dynamic";
 import { pdfjs } from "react-pdf";
 import NavigationLg from "@/components/navigationLg";
+import { Assistant } from "@/components/app/assistant";
 
 // Use a more reliable CDN approach
 if (typeof window !== "undefined") {
@@ -152,20 +153,25 @@ export default function Calls() {
 
         {analysisComplete && (
           <Tabs defaultValue="insights" className="w-full">
-            <TabsList className="mb-6 bg-white border">
-              <TabsTrigger value="insights" className="flex items-center">
-                <BarChart2 className="w-4 h-4 mr-2" />
-                Análisis
-              </TabsTrigger>
-              <TabsTrigger value="notes" className="flex items-center">
-                <NotebookPen className="w-4 h-4 mr-2" />
-                Notas
-              </TabsTrigger>
-              <TabsTrigger value="document" className="flex items-center">
-                <FileText className="w-4 h-4 mr-2" />
-                Documento Original
-              </TabsTrigger>
-            </TabsList>
+            <div className="flex items-center justify-between mb-6">
+              <TabsList className="bg-white border">
+                <TabsTrigger value="document" className="flex items-center">
+                  <FileText className="w-4 h-4 mr-2" />
+                  Documento Original
+                </TabsTrigger>
+                <TabsTrigger value="insights" className="flex items-center">
+                  <BarChart2 className="w-4 h-4 mr-2" />
+                  Análisis
+                </TabsTrigger>
+                <TabsTrigger value="notes" className="flex items-center">
+                  <StickyNote className="w-4 h-4 mr-2" />
+                  Notas
+                </TabsTrigger>
+              </TabsList>
+              <div className="relative" data-agent-context={data ? JSON.stringify(data) : undefined}>
+                <Assistant data={data} />
+              </div>
+            </div>
 
             <TabsContent value="document">
               <Card>
