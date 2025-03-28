@@ -35,10 +35,12 @@ export function NavigationBar() {
         </nav>
 
         <div className="hidden items-center gap-4 md:flex">
-          <Link href="/login" className="text-sm font-medium hover:text-gray-300">
-            Iniciar Sesión
-          </Link>
-          <Button className="bg-white text-[#000000] hover:bg-gray-200">Crear Organización</Button>
+          <Button asChild variant="outline" className="bg-black border-white text-white hover:bg-gray-200 ">
+            <Link href="/orgSignUp">Crear Organización</Link>
+          </Button>
+          <Button asChild className="bg-white text-[#000000] hover:bg-gray-200">
+            <Link href="/login">Iniciar Sesión</Link>
+          </Button>
         </div>
       </div>
     </header>
