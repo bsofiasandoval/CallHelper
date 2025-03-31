@@ -48,7 +48,7 @@ export default function OrgSignUp() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            const res = await fetch("https://tubackend.com/organizations/register", {
+            const res = await fetch("https://127.0.0.1:5000/organizations/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
