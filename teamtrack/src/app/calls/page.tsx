@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useState, useEffect, useRef } from "react";
 import { Upload, FileText, BarChart2, NotebookPen, StickyNote, Clock, Tag, Loader2, ThumbsUp, ThumbsDown, Lightbulb, ArrowRight } from "lucide-react";
