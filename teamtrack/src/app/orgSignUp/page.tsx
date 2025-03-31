@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -46,18 +46,46 @@ export default function OrgSignUp() {
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            const res = await fetch("https://tubackend.com/organizations/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    org_name: values.orgName,
+                    domain: values.orgEmail.split("@")[1],
+                    first_name: values.nombre,
+                    last_name: values.apellido,
+                    email: values.orgEmail,
+                    password: values.orgPassword, // aún si no se usa, lo mandamos por si después lo necesitas
+                }),
+            });
+
+            const result = await res.json();
+
+            if (res.ok) {
+                alert("Organización registrada exitosamente ✅");
+                form.reset(); // limpiar formulario
+                // Puedes redirigir al login o dashboard si quieres
+            } else {
+                alert(`Error: ${result.error}`);
+            }
+        } catch (err) {
+            console.error("Error creando organización:", err);
+            alert("Error inesperado al registrar la organización.");
+        }
     }
-    
+
     return (
         <div className="flex flex-col min-h-screen bg-black">
             <NavigationBar />
-            
+
             <div className="grid min-h-svh lg:grid-cols-2 bg-white">
                 <div className="flex flex-col gap-4 p-6 md:p-10">
                     <div className="flex flex-1 items-center justify-center">
-                        <div className = "w-full max-w-xs">
+                        <div className="w-full max-w-xs">
                             <br />
                             <br />
                             <div className="flex flex-col items-center gap-2 text-center">
@@ -96,7 +124,7 @@ export default function OrgSignUp() {
                                         name="orgName"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Organizacion</FormLabel>
+                                                <FormLabel>Organización</FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="Teamtrack" {...field} />
                                                 </FormControl>
@@ -109,7 +137,7 @@ export default function OrgSignUp() {
                                         name="orgEmail"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Correo Electronico</FormLabel>
+                                                <FormLabel>Correo Electrónico</FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="nombre@organizacion.com" {...field} />
                                                 </FormControl>
@@ -124,7 +152,7 @@ export default function OrgSignUp() {
                                             <FormItem>
                                                 <FormLabel>Contraseña</FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="********" {...field} />
+                                                    <Input type="password" placeholder="********" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -149,5 +177,3 @@ export default function OrgSignUp() {
         </div>
     )
 }
-
-
