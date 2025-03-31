@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
+import * as z from "zod"
 import { NavigationBar } from "@/components/navigationBar"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,26 +15,10 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-
-const formSchema = z.object({
-    nombre: z.string().min(2, {
-        message: "Nombre debe tener al menos 2 caracteres.",
-    }),
-    apellido: z.string().min(2, {
-        message: "Apellido debe tener al menos 2 caracteres.",
-    }),
-    orgName: z.string().min(2, {
-        message: "Nombre de la Organización debe tener al menos 2 caracteres.",
-    }),
-    orgEmail: z.string().email({
-        message: "Correo de la Organización debe ser un correo válido.",
-    }),
-    orgPassword: z.string().min(8, {
-        message: "Contraseña debe tener al menos 8 caracteres.",
-    }),
-})
+import { useOrgSignUp, formSchema } from "@/hooks/useOrgSignUp" // Add this import
 
 export default function OrgSignUp() {
+    const { registerOrg } = useOrgSignUp(); // Use the hook
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -47,37 +31,17 @@ export default function OrgSignUp() {
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        try {
-            const res = await fetch("https://127.0.0.1:5000/organizations/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    org_name: values.orgName,
-                    domain: values.orgEmail.split("@")[1],
-                    first_name: values.nombre,
-                    last_name: values.apellido,
-                    email: values.orgEmail,
-                    password: values.orgPassword, // aún si no se usa, lo mandamos por si después lo necesitas
-                }),
-            });
-
-            const result = await res.json();
-
-            if (res.ok) {
-                alert("Organización registrada exitosamente ✅");
-                form.reset(); // limpiar formulario
-                // Puedes redirigir al login o dashboard si quieres
-            } else {
-                alert(`Error: ${result.error}`);
-            }
-        } catch (err) {
-            console.error("Error creando organización:", err);
-            alert("Error inesperado al registrar la organización.");
+        const result = await registerOrg(values);
+        
+        if (result.success) {
+            alert("Organización registrada exitosamente ✅");
+            form.reset();
+        } else {
+            alert(`Error: ${result.error}`);
         }
     }
 
+    // Rest of the component remains the same...
     return (
         <div className="flex flex-col min-h-screen bg-black">
             <NavigationBar />
@@ -177,3 +141,4 @@ export default function OrgSignUp() {
         </div>
     )
 }
+
