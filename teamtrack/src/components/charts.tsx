@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { BarChart as RechartsBarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"

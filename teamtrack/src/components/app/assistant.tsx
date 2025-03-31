@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useVapi } from "@/hooks/useVapi";
 import { AssistantButton } from "../assistantButton";

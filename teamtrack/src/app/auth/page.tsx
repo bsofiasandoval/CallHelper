@@ -1,29 +1,42 @@
-"use client";
+'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useGoogleAuth } from '@/hooks/useGoogleAuth'; // Adjust the path as needed
+import { useGoogleAuth } from '@/hooks/useGoogleAuth';
 
 export function AuthCallback() {
   const router = useRouter();
-  const { checkAuthAndSetCookies } = useGoogleAuth();
+  const [error, setError] = useState<string | null>(null);
+  const { handleAuthCallback } = useGoogleAuth();
 
   useEffect(() => {
-    const handleCallback = async (): Promise<void> => {
-      // Process the authentication and set cookies
-      const userData = await checkAuthAndSetCookies();
-      
-      if (userData) {
-        // Redirect to main page after successful authentication
-        router.push('/main');
-      } else {
-        // Redirect to login page if authentication failed
-        router.push('/login');
+    const completeAuth = async (): Promise<void> => {
+      try {
+        const result = await handleAuthCallback();
+        
+        if (result.error) {
+          setError(result.error);
+          setTimeout(() => router.push('/login'), 3000);
+        } else {
+          router.push('/main');
+        }
+      } catch (err) {
+        setError('Authentication failed');
+        setTimeout(() => router.push('/login'), 3000);
       }
     };
 
-    handleCallback();
+    completeAuth();
   }, []);
+
+  if (error) {
+    return (
+      <div className="flex flex-col justify-center items-center min-h-screen">
+        <p className="text-lg text-red-500">{error}</p>
+        <p>Redirecting to login page...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen">
