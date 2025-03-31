@@ -2,29 +2,11 @@
 
 import { NavigationBar } from "@/components/navigationBar";
 import { LoginForm } from "@/components/login-form";
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-);
-
-const loginWithGoogle = async () => {
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: 'http://localhost:3000/main' // Update this URL if necessary
-    }
-  });
-
-  if (error) {
-    console.error('Error al iniciar sesión con Google:', error.message);
-  } else {
-    console.log('Inicio de sesión con Google exitoso');
-  }
-};
+import { useGoogleAuth } from "@/hooks/useGoogleAuth";
 
 export default function LoginPage() {
+  const { loginWithGoogle } = useGoogleAuth();
+
   return (
     <div className="flex flex-col min-h-screen bg-black">
       <NavigationBar />
@@ -32,7 +14,6 @@ export default function LoginPage() {
         <div className="flex flex-col gap-4 p-6 md:p-10">
           <div className="flex flex-1 items-center justify-center">
             <div className="w-full max-w-xs">
-              {/* Pass the Google login function to the LoginForm */}
               <LoginForm onGoogleLogin={loginWithGoogle} />
             </div>
           </div>
