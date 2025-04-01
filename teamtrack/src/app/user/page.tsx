@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { redirect } from 'next/navigation';
+import NavigationAdmin from '@/components/navigationAdmin';
+import NavigationLg from '@/components/navigationLg';
 
 export default function MainPage() {
     const [loading, setLoading] = useState<boolean>(true);
@@ -42,6 +44,7 @@ export default function MainPage() {
     if (userRole === 'admin') {
         return (
             <div>
+                <NavigationAdmin />
                 <h1>Admin Dashboard</h1>
                 {/* Admin-specific content */}
             </div>
@@ -49,6 +52,7 @@ export default function MainPage() {
     } else {
         return (
             <div>
+                <NavigationLg />
                 <h1>User Dashboard</h1>
                 {/* Regular user content */}
             </div>

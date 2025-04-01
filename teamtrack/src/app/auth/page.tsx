@@ -3,11 +3,13 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useGoogleAuth } from '@/hooks/useGoogleAuth';
+import Cookies from 'js-cookie';
 
 export function AuthCallback() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const { handleAuthCallback } = useGoogleAuth();
+
 
   useEffect(() => {
     const completeAuth = async (): Promise<void> => {
@@ -17,9 +19,17 @@ export function AuthCallback() {
         if (result.error) {
           setError(result.error);
           setTimeout(() => router.push('/login'), 3000);
-        } else {
-          router.push('/main');
         }
+        if (result.success) {
+          const userRole = Cookies.get('userRole');
+          if (userRole === 'admin') {
+            router.push('/admin');
+          }
+          if (userRole === 'user') {
+            router.push('/user');
+          }
+        }
+        
       } catch (err) {
         setError('Authentication failed');
         setTimeout(() => router.push('/login'), 3000);
