@@ -20,14 +20,14 @@ export default function NavigationAdmin
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex md:items-center md:gap-8">
-          <Link href="/dashboard" className="text-base font-medium hover:text-primary">
+          <Link href="/dashboardAdmin" className="text-base font-medium hover:text-primary">
             Dashboard
           </Link>
-          <Link href="/clientes" className="text-base font-medium hover:text-primary">
+          <Link href="/clients" className="text-base font-medium hover:text-primary">
             Clientes
           </Link>
-          <Link href="/acerca" className="text-base font-medium hover:text-primary">
-            Acerca de Nosotros
+          <Link href="/callInsights" className="text-base font-medium hover:text-primary">
+            Analisis de Transcripciones
           </Link>
         </nav>
 
