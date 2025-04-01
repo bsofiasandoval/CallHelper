@@ -7,12 +7,15 @@ const supabase: SupabaseClient = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 );
 
-
 export function useGoogleAuth() {
   const handleAuthCallback = async (): Promise<any> => {
     try {
       // Get the current user session from Supabase
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user }, error } = await supabase.auth.getUser();
+      
+      // Debug: Log the result of supabase.auth.getUser
+      console.log('supabase.auth.getUser result:', { user, error });
+      console.log(user?.user_metadata.full_name);
       
       if (!user) {
         throw new Error("No authenticated user found");
@@ -21,6 +24,7 @@ export function useGoogleAuth() {
       // Send user info to your backend API
       const response = await axios.post('http://127.0.0.1:5000/auth/google/callback', {
         user_id: user.id,
+        full_name: user.user_metadata.full_name,
         email: user.email
       });
       
