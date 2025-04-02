@@ -10,7 +10,6 @@ import { CheckCircle } from 'lucide-react'
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-black">
-      <NavigationBar />
       
       {/* Hero Section */}
       <section className="relative py-20 px-4 md:px-6 lg:px-8">

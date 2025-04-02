@@ -32,8 +32,9 @@ export function useGoogleAuth() {
         // Store user info in cookies
         Cookies.set('userAuthenticated', 'true', { expires: 7 });
         Cookies.set('userId', response.data.userId, { expires: 7 });
+        Cookies.set('firstName', response.data.firstName, { expires: 7 });
         Cookies.set('userEmail', response.data.email, { expires: 7 });
-        Cookies.set('userRole', response.data.role, { expires: 7 });
+        Cookies.set('userRole', response.data.userRole, { expires: 7 });
         Cookies.set('organizationId', response.data.organizationId, { expires: 7 });
         
         return response.data;

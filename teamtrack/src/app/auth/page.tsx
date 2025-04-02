@@ -3,33 +3,34 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useGoogleAuth } from '@/hooks/useGoogleAuth';
-import Cookies from 'js-cookie';
 
 export function AuthCallback() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const { handleAuthCallback } = useGoogleAuth();
 
-
   useEffect(() => {
     const completeAuth = async (): Promise<void> => {
       try {
         const result = await handleAuthCallback();
-        
+
         if (result.error) {
           setError(result.error);
           setTimeout(() => router.push('/login'), 3000);
+          return;
         }
+
         if (result.success) {
-          const userRole = Cookies.get('userRole');
-          if (userRole === 'admin') {
+          const role = result.userRole;  // ✅ read it from response, not cookie
+          console.log('User role from response:', role);
+
+          if (role === 'admin') {
             router.push('/admin');
-          }
-          if (userRole === 'user') {
+          } else {
             router.push('/user');
           }
         }
-        
+
       } catch (err) {
         setError('Authentication failed');
         setTimeout(() => router.push('/login'), 3000);
@@ -53,6 +54,6 @@ export function AuthCallback() {
       <p className="text-lg">Completando inicio de sesión...</p>
     </div>
   );
-};
+}
 
 export default AuthCallback;
