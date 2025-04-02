@@ -287,7 +287,7 @@ export default function Calls() {
             </TabsContent>
 
             <TabsContent value="email">
-              <Card>
+              <Card className="max-w-[400px] mx-auto">
                 <CardHeader>
                   <CardTitle className="flex items-center text-[#000000]">
                     <Mail className="w-5 h-5 mr-2" />
