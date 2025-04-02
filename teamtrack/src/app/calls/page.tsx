@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from "react";
-import { Upload, FileText, BarChart2, NotebookPen, StickyNote, Clock, Tag, Loader2, ThumbsUp, ThumbsDown, Lightbulb, ArrowRight } from "lucide-react";
+import { Upload, FileText, BarChart2, NotebookPen, StickyNote, Clock, Tag, Loader2, ThumbsUp, ThumbsDown, Lightbulb, ArrowRight, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -13,6 +13,9 @@ import dynamic from "next/dynamic";
 import { pdfjs } from "react-pdf";
 import NavigationLg from "@/components/navigationLg";
 import { Assistant } from "@/components/app/assistant";
+import { useEmailAnalysis } from "@/hooks/useEmailAnalysis";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 // Use a more reliable CDN approach
 if (typeof window !== "undefined") {
@@ -40,19 +43,24 @@ export default function Calls() {
   const [numPages, setNumPages] = useState<number>();
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
-  // Using the custom hook at the top level
+  const [emailSubject, setEmailSubject] = useState("");
+  const [emailBody, setEmailBody] = useState("");
+
+  // Using the custom hooks at the top level
   const { data, error, loading } = useAgent(
     file,
     file?.type === "text/plain" ? documentText : null
   );
 
+  const { emailData, error: emailError, loading: emailLoading, analyzeEmail } = useEmailAnalysis();
+
   useEffect(() => {
-    if (!loading) {
+    if (!loading && data) {
       setIsProcessing(false);
       if (error) {
         console.error("Error uploading file:", error);
-      } else if (data) {
-        console.log("Data fetched:", data);
+      } else {
+        console.log("Data fetched:", JSON.stringify(data, null, 2));
         setAnalysisComplete(true);
       }
     }
@@ -78,7 +86,6 @@ export default function Calls() {
     }
   };
 
-
   const handleUpload = async () => {
     if (!file) return;
     console.log("Submitting file:", file);
@@ -87,6 +94,15 @@ export default function Calls() {
     setAnalysisComplete(false);
   };
 
+  const handleEmailGeneration = async () => {
+    if (!data) return;
+    console.log("Generating email with data:", JSON.stringify(data, null, 2));
+    const result = await analyzeEmail(data);
+    if (result) {
+      setEmailSubject(result.email.subject);
+      setEmailBody(result.email.body);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fbfbfb]">
@@ -167,6 +183,10 @@ export default function Calls() {
                   <StickyNote className="w-4 h-4 mr-2" />
                   Notas
                 </TabsTrigger>
+                <TabsTrigger value="email" className="flex items-center">
+                  <Mail className="w-4 h-4 mr-2" />
+                  Email
+                </TabsTrigger>
               </TabsList>
               <div className="relative" data-agent-context={data ? JSON.stringify(data) : undefined}>
                 <Assistant data={data} />
@@ -221,7 +241,6 @@ export default function Calls() {
               </Card>
             </TabsContent>
 
-
             <TabsContent value="notes">
               <Card>
                 <CardHeader>
@@ -267,6 +286,52 @@ export default function Calls() {
               </Card>
             </TabsContent>
 
+            <TabsContent value="email">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center text-[#000000]">
+                    <Mail className="w-5 h-5 mr-2" />
+                    Generar Email
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div>
+                      <Button 
+                        onClick={handleEmailGeneration}
+                        disabled={!data || emailLoading}
+                        className="w-full mb-4"
+                      >
+                        {emailLoading ? "Generando..." : "Generar Email"}
+                      </Button>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Input
+                        placeholder="Asunto del correo"
+                        value={emailSubject}
+                        onChange={(e) => setEmailSubject(e.target.value)}
+                      />
+                      <Textarea
+                        placeholder="Contenido del correo"
+                        value={emailBody}
+                        onChange={(e) => setEmailBody(e.target.value)}
+                        className="min-h-[200px]"
+                      />
+                      <Button 
+                        className="w-full"
+                        disabled={!emailSubject || !emailBody}
+                        onClick={() => {
+                          console.log('Sending email:', { subject: emailSubject, body: emailBody });
+                        }}
+                      >
+                        Enviar Email
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
 
             <TabsContent value="insights">
               <div className="grid gap-6 md:grid-cols-2">
