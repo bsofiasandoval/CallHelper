@@ -1,10 +1,13 @@
-'use client';
+"use client"
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useGoogleAuth } from '@/hooks/useGoogleAuth';
+import { useUser } from "@/context/UserContext";
+import { useGoogleAuth } from "@/hooks/useGoogleAuth";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
-export function AuthCallback() {
+export default function AuthCallbackPage() {
+  const { setUserRole, setFirstName } = useUser();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const { handleAuthCallback } = useGoogleAuth();
@@ -16,24 +19,27 @@ export function AuthCallback() {
 
         if (result.error) {
           setError(result.error);
-          setTimeout(() => router.push('/login'), 3000);
+          setTimeout(() => router.push("/login"), 3000);
           return;
         }
 
         if (result.success) {
-          const role = result.userRole;  // ✅ read it from response, not cookie
-          console.log('User role from response:', role);
+          const role = result.userRole;
+          const firstName = result.firstName;
 
-          if (role === 'admin') {
-            router.push('/admin');
-          } else {
-            router.push('/user');
-          }
+          // Update global state
+          setUserRole(role);
+          setFirstName(firstName);
+
+          // Update cookies
+          Cookies.set("userRole", role);
+          Cookies.set("firstName", firstName);
+
+          // Redirect based on role
+          router.push(role === "admin" ? "/admin" : "/user");
         }
-
       } catch (err) {
-        setError('Authentication failed');
-        setTimeout(() => router.push('/login'), 3000);
+        setTimeout(() => router.push("/login"), 3000);
       }
     };
 
@@ -56,4 +62,3 @@ export function AuthCallback() {
   );
 }
 
-export default AuthCallback;

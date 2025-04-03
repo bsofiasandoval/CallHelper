@@ -3,48 +3,48 @@
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import Cookies from "js-cookie"
 import { useRouter } from "next/navigation"
 import { useGoogleAuth } from "@/hooks/useGoogleAuth"
-
-// Define possible user roles
-type UserRole = 'guest' | 'user' | 'admin' 
+import { useUser } from "@/context/UserContext"
 
 export function NavigationBar() {
+  const [isHydrated, setIsHydrated] = useState(false) // Track hydration
   const [isOpen, setIsOpen] = useState(false)
-  const [firstName, setFirstName] = useState<string | null>(null)
-  const [userRole, setUserRole] = useState<UserRole>('guest')
+  const { userRole, firstName, setUserRole, setFirstName } = useUser()
   const router = useRouter()
   const { logout } = useGoogleAuth()
 
   useEffect(() => {
-    const authenticated = Cookies.get('userAuthenticated') === 'true'
-    if (authenticated) {
-      const email = Cookies.get('userEmail')
-      const firstName = Cookies.get('firstName') || email?.split('@')[0] || 'Usuario'
-      setFirstName(firstName)
-      const role = Cookies.get('userRole')
-      setUserRole(role === 'admin' ? 'admin' : 'user')
-    } else {
-      setUserRole('guest')
-    }
+    setIsHydrated(true) // Mark as hydrated
   }, [])
 
   const handleLogout = async () => {
     await logout()
-    setUserRole('guest')
+    setUserRole("guest")
     setFirstName(null)
-    router.push('/')
+    router.push("/")
   }
 
-  const isLoggedIn = userRole !== 'guest'
-
   const renderNavLinks = () => {
+    if (!isHydrated) {
+      // Render static links for SSR
+      return (
+        <>
+          <Link href="#features" className="text-base font-medium hover:text-gray-300">
+            Funcionalidades
+          </Link>
+          <Link href="/pricing" className="text-base font-medium hover:text-gray-300">
+            Precios
+          </Link>
+        </>
+      )
+    }
+
     switch (userRole) {
-      case 'admin':
+      case "admin":
         return (
           <>
-            <Link href="/dashboard" className="text-base font-medium hover:text-gray-300">
+            <Link href="/admin" className="text-base font-medium hover:text-gray-300">
               Dashboard
             </Link>
             <Link href="/clients" className="text-base font-medium hover:text-gray-300">
@@ -53,18 +53,12 @@ export function NavigationBar() {
             <Link href="/projects" className="text-base font-medium hover:text-gray-300">
               Proyectos
             </Link>
-            <Link href="/employees" className="text-base font-medium hover:text-gray-300">
-              Empleados
-            </Link>
-            <Link href="/settings" className="text-base font-medium hover:text-gray-300">
-              Configuración
-            </Link>
           </>
         )
-      case 'user':
+      case "user":
         return (
           <>
-            <Link href="/dashboard" className="text-base font-medium hover:text-gray-300">
+            <Link href="/user" className="text-base font-medium hover:text-gray-300">
               Dashboard
             </Link>
             <Link href="/projects" className="text-base font-medium hover:text-gray-300">
@@ -75,29 +69,44 @@ export function NavigationBar() {
             </Link>
           </>
         )
-      case 'guest':
       default:
         return (
           <>
             <Link href="#features" className="text-base font-medium hover:text-gray-300">
               Funcionalidades
             </Link>
-            <Link href="/orgs" className="text-base font-medium hover:text-gray-300">
-              Empresas
+            <Link href="/pricing" className="text-base font-medium hover:text-gray-300">
+              Precios
             </Link>
             <Link href="/about-us" className="text-base font-medium hover:text-gray-300">
               Acerca de Nosotros
             </Link>
-            <Link href="/demo" className="text-base font-medium hover:text-gray-300">
-              Precios
-            </Link>
+            
           </>
         )
     }
   }
 
   const renderActionButtons = () => {
-    if (userRole === 'guest') {
+    if (!isHydrated) {
+      // Render static buttons for SSR
+      return (
+        <>
+          <Button
+            asChild
+            variant="outline"
+            className="bg-black border-white text-white hover:bg-gray-200"
+          >
+            <Link href="/orgSignUp">Crear Organización</Link>
+          </Button>
+          <Button asChild className="bg-white text-[#000000] hover:bg-gray-200">
+            <Link href="/login">Iniciar Sesión</Link>
+          </Button>
+        </>
+      )
+    }
+
+    if (userRole === "guest") {
       return (
         <>
           <Button
@@ -133,7 +142,7 @@ export function NavigationBar() {
       <div className="flex items-center">
         {/* Logo Section */}
         <div className="font-bold text-xl text-white flex items-center">
-          <Link href={userRole === 'guest' ? '/' : '/dashboard'} className="flex items-center">
+          <Link href="/" className="flex items-center">
             <span className="text-2xl font-bold tracking-tighter">teamtrack</span>
           </Link>
         </div>
@@ -145,12 +154,17 @@ export function NavigationBar() {
       </div>
 
       {/* Mobile Menu Button */}
-      <button 
-        className="md:hidden flex items-center" 
+      <button
+        className="md:hidden flex items-center"
         onClick={() => setIsOpen(!isOpen)}
       >
         <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+          />
         </svg>
       </button>
 
