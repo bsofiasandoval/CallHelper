@@ -10,14 +10,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { SentimentChart, DurationChart, TopicsChart, KeywordsCloud } from "@/components/charts";
 import useAgent from "@/hooks/useAgent";
 import dynamic from "next/dynamic";
-import { pdfjs } from "react-pdf";
-import NavigationLg from "@/components/navigationLg";
 import { Assistant } from "@/components/app/assistant";
 
-// Use a more reliable CDN approach
-if (typeof window !== "undefined") {
-  pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-}
 
 // Dynamically import PDF components
 const Document = dynamic(
@@ -90,7 +84,7 @@ export default function Calls() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fbfbfb]">
-      <NavigationLg />
+    
       <main className="flex-1 p-6">
         <h1 className="text-4xl font-bold tracking-tight mb-2 text-[#000000]">Análisis de Llamadas</h1>
         <h2 className="text-xl mb-8 text-[#545454]">Carga y analiza transcripciones de llamadas</h2>

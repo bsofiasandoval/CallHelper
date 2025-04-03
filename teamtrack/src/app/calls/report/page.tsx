@@ -59,28 +59,28 @@ import {
 export default function CallReport() {
   const [activeTab, setActiveTab] = useState("overview");
 
-  // Mock call data
+  // Datos de la llamada
   const callData = {
     id: "call-2024-04-01-01",
     client: "Acme Corporation",
-    project: "Website Redesign Project",
-    date: "April 1, 2025",
+    project: "Proyecto de Rediseño de Sitio Web",
+    date: "1 de Abril, 2025",
     startTime: "10:00 AM",
-    duration: "45 minutes",
+    duration: "45 minutos",
     participants: [
-      { name: "Jane Doe", role: "Product Manager", company: "Your Company" },
-      { name: "John Smith", role: "Design Director", company: "Acme Corp" },
-      { name: "Alice Johnson", role: "Project Lead", company: "Acme Corp" },
+      { name: "Jane Doe", role: "Gerente de Producto", company: "Tu Empresa" },
+      { name: "John Smith", role: "Director de Diseño", company: "Acme Corp" },
+      { name: "Alice Johnson", role: "Líder de Proyecto", company: "Acme Corp" },
     ],
     overallSentiment: 85,
     clientSentiment: 82,
     yourTeamSentiment: 88,
     keyTopics: [
-      { name: "Timeline", mentions: 14, sentiment: 72 },
-      { name: "Budget", mentions: 9, sentiment: 65 },
-      { name: "Design", mentions: 22, sentiment: 91 },
-      { name: "Features", mentions: 18, sentiment: 88 },
-      { name: "User Testing", mentions: 7, sentiment: 79 },
+      { name: "Cronograma", mentions: 14, sentiment: 72 },
+      { name: "Presupuesto", mentions: 9, sentiment: 65 },
+      { name: "Diseño", mentions: 22, sentiment: 91 },
+      { name: "Funcionalidades", mentions: 18, sentiment: 88 },
+      { name: "Pruebas de Usuario", mentions: 7, sentiment: 79 },
     ],
     speakingRatio: {
       client: 42,
@@ -88,119 +88,82 @@ export default function CallReport() {
     },
   };
 
-  // Helper function to get sentiment color
+  // Función para obtener el color del sentimiento
   const getSentimentColor = (score: number) => {
-    if (score >= 80) return "text-green-400";
-    if (score >= 60) return "text-amber-400";
-    return "text-red-400";
+    if (score >= 80) return "text-green-600";
+    if (score >= 60) return "text-amber-600";
+    return "text-red-600";
   };
 
   const getBgSentimentColor = (score: number) => {
-    if (score >= 80) return "bg-green-500/20";
-    if (score >= 60) return "bg-amber-500/20";
-    return "bg-red-500/20";
+    if (score >= 80) return "bg-green-100";
+    if (score >= 60) return "bg-amber-100";
+    return "bg-red-100";
+  };
+
+  // Traduce el nivel de sentimiento
+  const getSentimentLevel = (score: number) => {
+    if (score >= 80) return "Positivo";
+    if (score >= 60) return "Neutral";
+    return "Negativo";
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950">
-      {/* Header */}
-      <header className="h-16 border-b border-zinc-800 flex items-center justify-between px-6 bg-zinc-900/50">
-        <div className="flex items-center">
-          <div className="font-bold text-xl text-white flex items-center">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-500 to-blue-600 mr-3 flex items-center justify-center">
-              <MessageSquare size={16} className="text-white" />
-            </div>
-            team<span className="text-blue-500">track</span>
-          </div>
-
-          <div className="ml-8 flex items-center space-x-5">
-            <Button variant="ghost" className="text-zinc-400 hover:text-white">
-              Dashboard
-            </Button>
-            <Button variant="ghost" className="text-zinc-400 hover:text-white">
-              Calls
-            </Button>
-            <Button variant="ghost" className="text-zinc-400 hover:text-white">
-              Reports
-            </Button>
-            <Button variant="ghost" className="text-zinc-400 hover:text-white">
-              Clients
-            </Button>
-          </div>
-        </div>
-
-        <div className="flex items-center space-x-3">
-          <Select defaultValue="acme">
-            <SelectTrigger className="w-44 bg-zinc-800 border-zinc-700 text-white">
-              <SelectValue placeholder="Select organization" />
-            </SelectTrigger>
-            <SelectContent className="bg-zinc-800 border-zinc-700 text-white">
-              <SelectItem value="acme">Acme Corp</SelectItem>
-              <SelectItem value="globex">Globex</SelectItem>
-              <SelectItem value="initech">Initech</SelectItem>
-              <SelectItem value="umbrella">Umbrella Corp</SelectItem>
-              <SelectItem value="stark">Stark Industries</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Avatar className="h-9 w-9">
-            <AvatarImage src="/avatar.png" />
-            <AvatarFallback className="bg-indigo-600">JD</AvatarFallback>
-          </Avatar>
-        </div>
-      </header>
+    <div className="min-h-screen bg-[#fbfbfb]">
 
       {/* Content Area */}
       <main className="container mx-auto px-6 py-8">
         {/* Back navigation and actions */}
         <div className="flex justify-between items-center mb-6">
-          <Button variant="ghost" className="text-zinc-400 hover:text-white">
-            <ChevronLeft className="mr-2 h-4 w-4" />
-            Back to Calls
-          </Button>
+            <Button asChild variant="ghost" className="text-[#545454] hover:text-[#000000] hover:bg-gray-100">
+            <a href="/user">
+              <ChevronLeft className="mr-2 h-4 w-4" />
+              Regresar al Dashboard
+            </a>
+            </Button>
 
           <div className="flex items-center space-x-2">
             <Button
               variant="outline"
               size="sm"
-              className="bg-zinc-800 border-zinc-700 text-white hover:bg-zinc-700"
+              className="bg-white border-gray-200 text-[#000000] hover:bg-gray-100"
             >
               <Share2 className="mr-2 h-4 w-4" />
-              Share
+              Compartir
             </Button>
             <Button
               variant="outline"
               size="sm"
-              className="bg-zinc-800 border-zinc-700 text-white hover:bg-zinc-700"
+              className="bg-white border-gray-200 text-[#000000] hover:bg-gray-100"
             >
               <Download className="mr-2 h-4 w-4" />
-              Export
+              Exportar
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="outline"
                   size="icon"
-                  className="h-8 w-8 bg-zinc-800 border-zinc-700 text-white"
+                  className="h-8 w-8 bg-white border-gray-200 text-[#000000]"
                 >
                   <MoreHorizontal size={16} />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="end"
-                className="bg-zinc-800 border-zinc-700 text-white"
+                className="bg-white border-gray-200 text-[#000000]"
               >
-                <DropdownMenuItem className="cursor-pointer hover:bg-zinc-700">
+                <DropdownMenuItem className="cursor-pointer hover:bg-gray-100">
                   <Bookmark className="mr-2 h-4 w-4" />
-                  Save as Template
+                  Guardar como Plantilla
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer hover:bg-zinc-700">
+                <DropdownMenuItem className="cursor-pointer hover:bg-gray-100">
                   <CalendarClock className="mr-2 h-4 w-4" />
-                  Schedule Follow-up
+                  Programar Seguimiento
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer hover:bg-zinc-700">
+                <DropdownMenuItem className="cursor-pointer hover:bg-gray-100">
                   <FileText className="mr-2 h-4 w-4" />
-                  Print Report
+                  Imprimir Informe
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -208,14 +171,14 @@ export default function CallReport() {
         </div>
 
         {/* Call Header */}
-        <Card className="bg-zinc-800/50 border-zinc-700 mb-6">
+        <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow mb-6">
           <CardContent className="p-6">
             <div className="flex justify-between">
               <div>
-                <h1 className="text-2xl font-bold text-white mb-1">
+                <h1 className="text-2xl font-bold text-[#000000] mb-1">
                   {callData.client}: {callData.project}
                 </h1>
-                <div className="flex items-center space-x-5 text-zinc-400 text-sm">
+                <div className="flex items-center space-x-5 text-[#545454] text-sm">
                   <div className="flex items-center">
                     <Calendar className="mr-2 h-4 w-4" />
                     {callData.date}
@@ -226,20 +189,20 @@ export default function CallReport() {
                   </div>
                   <Badge
                     variant="outline"
-                    className="text-xs border-zinc-600 bg-zinc-800 text-indigo-200"
+                    className="text-xs border-blue-200 bg-blue-50 text-blue-700"
                   >
-                    <Radio className="h-3 w-3 text-indigo-400" />
-                    Recorded
+                    <Radio className="h-3 w-3 text-blue-500 mr-1" />
+                    Grabada
                   </Badge>
                 </div>
               </div>
 
               <div className="text-right">
-                <div className="text-sm text-zinc-400 mb-1">
-                  Overall Call Sentiment
+                <div className="text-sm text-[#545454] mb-1">
+                  Sentimiento General
                 </div>
                 <div className="flex items-center justify-end">
-                  <div className="text-2xl font-bold text-white mr-2">
+                  <div className="text-2xl font-bold text-[#000000] mr-2">
                     {callData.overallSentiment}%
                   </div>
                   <div
@@ -247,7 +210,7 @@ export default function CallReport() {
                       callData.overallSentiment
                     )} ${getSentimentColor(callData.overallSentiment)}`}
                   >
-                    Positive
+                    {getSentimentLevel(callData.overallSentiment)}
                   </div>
                 </div>
               </div>
@@ -257,15 +220,15 @@ export default function CallReport() {
 
         {/* Participants */}
         <div className="flex items-center space-x-2 mb-6">
-          <div className="text-sm text-zinc-400 mr-2">Participants:</div>
+          <div className="text-sm text-[#545454] mr-2">Participantes:</div>
           {callData.participants.map((participant, index) => (
             <div key={index} className="flex items-center">
               <Avatar className="h-7 w-7 mr-1">
                 <AvatarFallback
                   className={
-                    participant.company === "Your Company"
-                      ? "bg-indigo-600/30 text-indigo-400"
-                      : "bg-zinc-700/30 text-zinc-400"
+                    participant.company === "Tu Empresa"
+                      ? "bg-blue-100 text-blue-600"
+                      : "bg-gray-100 text-[#545454]"
                   }
                 >
                   {participant.name
@@ -274,9 +237,9 @@ export default function CallReport() {
                     .join("")}
                 </AvatarFallback>
               </Avatar>
-              <div className="text-sm text-zinc-300">{participant.name}</div>
+              <div className="text-sm text-[#000000]">{participant.name}</div>
               {index < callData.participants.length - 1 && (
-                <div className="mx-2 text-zinc-600">•</div>
+                <div className="mx-2 text-gray-300">•</div>
               )}
             </div>
           ))}
@@ -284,30 +247,30 @@ export default function CallReport() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-          <TabsList className="bg-zinc-800 border-b border-zinc-700 w-full justify-start rounded-none p-0 h-auto">
+          <TabsList className="bg-white border-b border-gray-200 w-full justify-start rounded-none p-0 h-auto">
             <TabsTrigger
               value="overview"
-              className="px-4 py-2 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-indigo-500 data-[state=active]:text-white rounded-none"
+              className="px-4 py-2 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:text-[#000000] rounded-none"
             >
-              Overview
+              Resumen
             </TabsTrigger>
             <TabsTrigger
               value="transcript"
-              className="px-4 py-2 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-indigo-500 data-[state=active]:text-white rounded-none"
+              className="px-4 py-2 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:text-[#000000] rounded-none"
             >
-              Transcript
+              Transcripción
             </TabsTrigger>
             <TabsTrigger
               value="insights"
-              className="px-4 py-2 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-indigo-500 data-[state=active]:text-white rounded-none"
+              className="px-4 py-2 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:text-[#000000] rounded-none"
             >
-              AI Insights
+              Análisis IA
             </TabsTrigger>
             <TabsTrigger
               value="actions"
-              className="px-4 py-2 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-indigo-500 data-[state=active]:text-white rounded-none"
+              className="px-4 py-2 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:text-[#000000] rounded-none"
             >
-              Action Items
+              Acciones
             </TabsTrigger>
           </TabsList>
 
@@ -317,33 +280,33 @@ export default function CallReport() {
               {/* Left Column - Key Metrics */}
               <div className="lg:col-span-2 space-y-6">
                 {/* Sentiment Analysis Card */}
-                <Card className="bg-zinc-800/50 border-zinc-700">
+                <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
                   <CardHeader>
-                    <CardTitle className="text-white">
-                      Sentiment Analysis
+                    <CardTitle className="text-[#000000]">
+                      Análisis de Sentimiento
                     </CardTitle>
-                    <CardDescription className="text-zinc-400">
-                      Emotional tone throughout the conversation
+                    <CardDescription className="text-[#545454]">
+                      Tono emocional detectado durante la conversación
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-5">
                       <div>
                         <div className="flex justify-between mb-2 text-sm">
-                          <span className="text-zinc-400">
-                            Client Sentiment
+                          <span className="text-[#545454]">
+                            Cliente
                           </span>
                           <span
                             className={getSentimentColor(
                               callData.clientSentiment
                             )}
                           >
-                            {callData.clientSentiment}%
+                            {callData.clientSentiment}% - {getSentimentLevel(callData.clientSentiment)}
                           </span>
                         </div>
                         <Progress
                           value={callData.clientSentiment}
-                          className="h-2 bg-zinc-700"
+                          className="h-2 bg-gray-100"
                         >
                           <div
                             className={`h-full transition-all ${
@@ -360,20 +323,20 @@ export default function CallReport() {
 
                       <div>
                         <div className="flex justify-between mb-2 text-sm">
-                          <span className="text-zinc-400">
-                            Your Team Sentiment
+                          <span className="text-[#545454]">
+                            Tu Equipo
                           </span>
                           <span
                             className={getSentimentColor(
                               callData.yourTeamSentiment
                             )}
                           >
-                            {callData.yourTeamSentiment}%
+                            {callData.yourTeamSentiment}% - {getSentimentLevel(callData.yourTeamSentiment)}
                           </span>
                         </div>
                         <Progress
                           value={callData.yourTeamSentiment}
-                          className="h-2 bg-zinc-700"
+                          className="h-2 bg-gray-100"
                         >
                           <div
                             className={`h-full transition-all ${
@@ -388,76 +351,93 @@ export default function CallReport() {
                         </Progress>
                       </div>
 
-                      <div className="grid grid-cols-5 gap-3 pt-3">
+                      <h3 className="font-medium text-[#000000] mt-4 mb-2">Emociones Detectadas</h3>
+                      
+                      <div className="grid grid-cols-5 gap-3">
                         {[
                           {
-                            emotion: "Enthusiasm",
-                            score: 83,
+                            emotion: "Entusiasmo",
+                            description: "Emoción positiva, interés elevado",
+                            intensity: "Alta", // Alta, Media, Baja
+                            value: 83, // Porcentaje de intensidad
                             icon: <Heart className="h-4 w-4" />,
                           },
                           {
-                            emotion: "Agreement",
-                            score: 75,
+                            emotion: "Acuerdo",
+                            description: "Conformidad con las propuestas",
+                            intensity: "Alta",
+                            value: 75,
                             icon: <ThumbsUp className="h-4 w-4" />,
                           },
                           {
-                            emotion: "Confusion",
-                            score: 24,
+                            emotion: "Confusión",
+                            description: "Dudas sobre aspectos técnicos",
+                            intensity: "Baja",
+                            value: 24,
                             icon: <AlertTriangle className="h-4 w-4" />,
                           },
                           {
-                            emotion: "Hesitation",
-                            score: 32,
+                            emotion: "Incertidumbre",
+                            description: "Sobre plazos y cronograma",
+                            intensity: "Muy Baja",
+                            value: 10,
                             icon: <Clock3 className="h-4 w-4" />,
                           },
                           {
-                            emotion: "Frustration",
-                            score: 12,
+                            emotion: "Frustración",
+                            description: "Momentos puntuales",
+                            intensity: "Mínima",
+                            value: 5,
                             icon: <ThumbsDown className="h-4 w-4" />,
                           },
                         ].map((emotion, index) => (
                           <div
                             key={index}
-                            className="text-center p-3 rounded-lg bg-zinc-900/60"
+                            className="text-center p-3 rounded-lg bg-gray-50 border border-gray-100"
                           >
                             <div
-                              className={`mx-auto w-8 h-8 rounded-full flex items-center justify-center mb-2 ${getBgSentimentColor(
-                                emotion.score === 24 ||
-                                  emotion.score === 32 ||
-                                  emotion.score === 12
-                                  ? 100 - emotion.score
-                                  : emotion.score
-                              )}`}
+                              className={`mx-auto w-8 h-8 rounded-full flex items-center justify-center mb-2 ${
+                                emotion.emotion === "Confusión" || 
+                                emotion.emotion === "Incertidumbre" || 
+                                emotion.emotion === "Frustración"
+                                  ? getBgSentimentColor(100 - emotion.value)
+                                  : getBgSentimentColor(emotion.value)
+                              }`}
                             >
                               {emotion.icon}
                             </div>
-                            <div className="text-xs text-zinc-300 mb-1">
+                            <div className="text-xs font-medium text-[#000000] mb-1">
                               {emotion.emotion}
                             </div>
+                            <div className="text-xs mb-1 text-[#545454]">
+                              {emotion.intensity}
+                            </div>
                             <div
-                              className={`text-sm font-medium ${getSentimentColor(
-                                emotion.emotion === "Confusion" ||
-                                  emotion.emotion === "Hesitation" ||
-                                  emotion.emotion === "Frustration"
-                                  ? 100 - emotion.score
-                                  : emotion.score
-                              )}`}
+                              className={`text-sm font-medium ${
+                                emotion.emotion === "Confusión" || 
+                                emotion.emotion === "Incertidumbre" || 
+                                emotion.emotion === "Frustración"
+                                  ? getSentimentColor(100 - emotion.value)
+                                  : getSentimentColor(emotion.value)
+                              }`}
                             >
-                              {emotion.score}%
+                              {emotion.value}%
                             </div>
                           </div>
                         ))}
                       </div>
 
-                      <div className="pt-2 text-sm text-zinc-400">
+                      <div className="pt-2 text-sm text-[#545454]">
                         <p>
-                          <span className="font-medium text-white">
-                            Analysis:
+                          <span className="font-medium text-[#000000]">
+                            Análisis:
                           </span>{" "}
-                          The call maintained positive sentiment throughout with
-                          high levels of enthusiasm and agreement. Minor
-                          confusion was detected during technical discussions
-                          (13:22 - 15:04) but was quickly resolved.
+                          La llamada mantuvo un sentimiento positivo durante toda la
+                          conversación, con altos niveles de entusiasmo y acuerdo.
+                          Se detectó una ligera confusión durante las discusiones
+                          técnicas (13:22 - 15:04), pero se resolvió rápidamente.
+                          La incertidumbre sobre los plazos fue mínima y no representó
+                          un obstáculo para la comunicación general.
                         </p>
                       </div>
                     </div>
@@ -465,11 +445,11 @@ export default function CallReport() {
                 </Card>
 
                 {/* Key Topics Card */}
-                <Card className="bg-zinc-800/50 border-zinc-700">
+                <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
                   <CardHeader>
-                    <CardTitle className="text-white">Key Topics</CardTitle>
-                    <CardDescription className="text-zinc-400">
-                      Most discussed subjects and associated sentiment
+                    <CardTitle className="text-[#000000]">Temas Principales</CardTitle>
+                    <CardDescription className="text-[#545454]">
+                      Asuntos más discutidos y su sentimiento asociado
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -477,14 +457,14 @@ export default function CallReport() {
                       {callData.keyTopics.map((topic, index) => (
                         <div
                           key={index}
-                          className="bg-zinc-900/60 p-4 rounded-lg"
+                          className="bg-gray-50 p-4 rounded-lg border border-gray-100"
                         >
                           <div className="flex justify-between mb-2">
-                            <div className="font-medium text-white">
+                            <div className="font-medium text-[#000000]">
                               {topic.name}
                             </div>
-                            <div className="text-sm text-zinc-400">
-                              {topic.mentions} mentions
+                            <div className="text-sm text-[#545454]">
+                              {topic.mentions} menciones
                             </div>
                           </div>
 
@@ -492,7 +472,7 @@ export default function CallReport() {
                             <div className="w-full mr-4">
                               <Progress
                                 value={topic.sentiment}
-                                className="h-2 bg-zinc-700"
+                                className="h-2 bg-gray-200"
                               >
                                 <div
                                   className={`h-full transition-all ${
@@ -515,18 +495,18 @@ export default function CallReport() {
                             </div>
                           </div>
 
-                          {/* Contextual notes for each topic */}
-                          <div className="text-xs text-zinc-400 mt-1">
-                            {topic.name === "Timeline" &&
-                              "Client expressed some concern about project timeline (17:05)"}
-                            {topic.name === "Budget" &&
-                              "Discussion about budget constraints and allocations"}
-                            {topic.name === "Design" &&
-                              "Very positive reception to design mockups presented"}
-                            {topic.name === "Features" &&
-                              "Agreement on core features and prioritization"}
-                            {topic.name === "User Testing" &&
-                              "Brief discussion about testing schedule"}
+                          {/* Notas contextuales para cada tema */}
+                          <div className="text-xs text-[#545454] mt-1">
+                            {topic.name === "Cronograma" &&
+                              "El cliente expresó cierta preocupación sobre los plazos del proyecto (17:05)"}
+                            {topic.name === "Presupuesto" &&
+                              "Discusión sobre restricciones presupuestarias y asignaciones"}
+                            {topic.name === "Diseño" &&
+                              "Recepción muy positiva a las maquetas de diseño presentadas"}
+                            {topic.name === "Funcionalidades" &&
+                              "Acuerdo sobre las funciones principales y su priorización"}
+                            {topic.name === "Pruebas de Usuario" &&
+                              "Breve discusión sobre el calendario de pruebas"}
                           </div>
                         </div>
                       ))}
@@ -538,20 +518,20 @@ export default function CallReport() {
               {/* Right Column - Speaking Patterns & Insights */}
               <div className="lg:col-span-1 space-y-6">
                 {/* Speaking Patterns */}
-                <Card className="bg-zinc-800/50 border-zinc-700">
+                <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
                   <CardHeader>
-                    <CardTitle className="text-white">
-                      Speaking Patterns
+                    <CardTitle className="text-[#000000]">
+                      Patrones de Conversación
                     </CardTitle>
-                    <CardDescription className="text-zinc-400">
-                      Conversation participation analysis
+                    <CardDescription className="text-[#545454]">
+                      Análisis de participación en la conversación
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="w-44 h-44 mx-auto mb-4 relative">
-                      <div className="w-full h-full rounded-full bg-zinc-700">
+                      <div className="w-full h-full rounded-full bg-gray-200">
                         <div
-                          className="absolute top-0 left-0 bg-indigo-600 rounded-full overflow-hidden"
+                          className="absolute top-0 left-0 bg-blue-500 rounded-full overflow-hidden"
                           style={{
                             width: "100%",
                             height: "100%",
@@ -572,12 +552,12 @@ export default function CallReport() {
                           }}
                         ></div>
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-20 h-20 rounded-full bg-zinc-800 flex items-center justify-center text-center">
+                          <div className="w-20 h-20 rounded-full bg-white border border-gray-100 flex items-center justify-center text-center">
                             <div>
-                              <div className="text-xs text-zinc-400">
-                                Speaking Ratio
+                              <div className="text-xs text-[#545454]">
+                                Proporción
                               </div>
-                              <div className="text-lg font-bold text-white">
+                              <div className="text-lg font-bold text-[#000000]">
                                 {callData.speakingRatio.yourTeam}:
                                 {callData.speakingRatio.client}
                               </div>
@@ -589,10 +569,10 @@ export default function CallReport() {
 
                     <div className="flex justify-between items-center mt-4">
                       <div className="flex items-center">
-                        <div className="w-3 h-3 rounded-full bg-indigo-600 mr-2"></div>
-                        <div className="text-sm text-zinc-300">Your Team</div>
+                        <div className="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
+                        <div className="text-sm text-[#000000]">Tu Equipo</div>
                       </div>
-                      <div className="text-sm font-medium text-white">
+                      <div className="text-sm font-medium text-[#000000]">
                         {callData.speakingRatio.yourTeam}%
                       </div>
                     </div>
@@ -600,139 +580,125 @@ export default function CallReport() {
                     <div className="flex justify-between items-center mt-2">
                       <div className="flex items-center">
                         <div className="w-3 h-3 rounded-full bg-purple-500 mr-2"></div>
-                        <div className="text-sm text-zinc-300">Client</div>
+                        <div className="text-sm text-[#000000]">Cliente</div>
                       </div>
-                      <div className="text-sm font-medium text-white">
+                      <div className="text-sm font-medium text-[#000000]">
                         {callData.speakingRatio.client}%
                       </div>
                     </div>
 
-                    <div className="mt-4 text-sm text-zinc-400 bg-zinc-900/60 p-3 rounded-lg">
+                    <div className="mt-4 text-sm text-[#545454] bg-gray-50 p-3 rounded-lg border border-gray-100">
                       <p>
-                        Your team had slightly more speaking time, but
-                        maintained good balance with client participation. There
-                        were no significant interruptions detected.
+                        Tu equipo tuvo un tiempo de habla ligeramente mayor, pero
+                        mantuvo un buen equilibrio con la participación del cliente.
+                        No se detectaron interrupciones significativas.
                       </p>
                     </div>
                   </CardContent>
                 </Card>
 
                 {/* AI Quick Insights */}
-                <Card className="bg-zinc-800/50 border-zinc-700">
+                <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
                   <CardHeader>
-                    <CardTitle className="text-white flex items-center">
-                      <Lightbulb className="mr-2 h-5 w-5 text-amber-400" />
-                      Quick Insights
+                    <CardTitle className="text-[#000000] flex items-center">
+                      <Lightbulb className="mr-2 h-5 w-5 text-amber-500" />
+                      Perspectivas Rápidas
                     </CardTitle>
-                    <CardDescription className="text-zinc-400">
-                      AI-detected patterns and recommendations
+                    <CardDescription className="text-[#545454]">
+                      Patrones y recomendaciones detectados por IA
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <div className="bg-green-500/10 border border-green-500/20 p-3 rounded-lg">
-                      <div className="text-sm font-medium text-green-400 mb-1 flex items-center">
+                    <div className="bg-green-50 border border-green-200 p-3 rounded-lg">
+                      <div className="text-sm font-medium text-green-600 mb-1 flex items-center">
                         <CheckCircle2 className="h-4 w-4 mr-1" />
-                        Strength
+                        Fortaleza
                       </div>
-                      <div className="text-xs text-zinc-300">
-                        Excellent explanation of technical concepts using visual
-                        aids. Client engagement increased 37% during demos.
+                      <div className="text-xs text-[#000000]">
+                        Excelente explicación de conceptos técnicos utilizando ayudas
+                        visuales. El interés del cliente aumentó un 37% durante las demostraciones.
                       </div>
                     </div>
 
-                    <div className="bg-amber-500/10 border border-amber-500/20 p-3 rounded-lg">
-                      <div className="text-sm font-medium text-amber-400 mb-1 flex items-center">
+                    <div className="bg-amber-50 border border-amber-200 p-3 rounded-lg">
+                      <div className="text-sm font-medium text-amber-600 mb-1 flex items-center">
                         <AlertTriangle className="h-4 w-4 mr-1" />
-                        Opportunity
+                        Oportunidad
                       </div>
-                      <div className="text-xs text-zinc-300">
-                        Client asked about timeline twice (12:05, 29:17) with
-                        increasing concern. Consider providing a detailed
-                        timeline document.
+                      <div className="text-xs text-[#000000]">
+                        El cliente preguntó sobre el cronograma dos veces (12:05, 29:17) 
+                        con creciente preocupación. Considera proporcionar un documento 
+                        detallado de cronograma.
                       </div>
                     </div>
 
-                    <div className="bg-indigo-500/10 border border-indigo-500/20 p-3 rounded-lg">
-                      <div className="text-sm font-medium text-indigo-400 mb-1 flex items-center">
+                    <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg">
+                      <div className="text-sm font-medium text-blue-600 mb-1 flex items-center">
                         <TrendingUp className="h-4 w-4 mr-1" />
-                        Pattern Detected
+                        Patrón Detectado
                       </div>
-                      <div className="text-xs text-zinc-300">
-                        Client uses "we need" phrasing to indicate high-priority
-                        requirements. This pattern appeared 7 times.
+                      <div className="text-xs text-[#000000]">
+                        El cliente usa la frase "necesitamos" para indicar requisitos
+                        de alta prioridad. Este patrón apareció 7 veces.
                       </div>
                     </div>
 
-                    <div className="bg-purple-500/10 border border-purple-500/20 p-3 rounded-lg">
-                      <div className="text-sm font-medium text-purple-400 mb-1 flex items-center">
+                    <div className="bg-purple-50 border border-purple-200 p-3 rounded-lg">
+                      <div className="text-sm font-medium text-purple-600 mb-1 flex items-center">
                         <Star className="h-4 w-4 mr-1" />
-                        Client Preference
+                        Preferencia del Cliente
                       </div>
-                      <div className="text-xs text-zinc-300">
-                        Client showed strongest positive reactions to minimalist
-                        design examples (21:15-23:40).
+                      <div className="text-xs text-[#000000]">
+                        El cliente mostró las reacciones más positivas a los ejemplos
+                        de diseño minimalista (21:15-23:40).
                       </div>
                     </div>
                   </CardContent>
                   <CardFooter>
                     <Button
                       variant="ghost"
-                      className="w-full text-indigo-400 hover:text-indigo-300 hover:bg-zinc-700/50"
+                      className="w-full text-blue-600 hover:text-blue-700 hover:bg-gray-50"
                     >
-                      View Detailed Analysis
+                      Ver Análisis Detallado
                     </Button>
                   </CardFooter>
                 </Card>
 
                 {/* Next Steps */}
-                <Card className="bg-zinc-800/50 border-zinc-700">
+                <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
                   <CardHeader>
-                    <CardTitle className="text-white">
-                      Recommended Next Steps
+                    <CardTitle className="text-[#000000]">
+                      Próximos Pasos Recomendados
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div className="flex items-start">
                       <div className="mr-3 mt-0.5">
-                        <div className="w-5 h-5 rounded-full border-2 border-indigo-500 flex items-center justify-center">
-                          <div className="w-2.5 h-2.5 rounded-full bg-indigo-500"></div>
+                        <div className="w-5 h-5 rounded-full border-2 border-blue-500 flex items-center justify-center">
+                          <div className="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
                         </div>
                       </div>
-                      <div className="text-sm text-zinc-300">
-                        Send detailed project timeline by{" "}
-                        <span className="text-white font-medium">
-                          April 3, 2025
-                        </span>
+                      <div className="text-sm text-[#545454]">
+                        Programar taller de pruebas de usuario para la{" "}
+                        <span className="text-[#000000] font-medium">semana 2</span>
                       </div>
                     </div>
 
                     <div className="flex items-start">
                       <div className="mr-3 mt-0.5">
-                        <div className="w-5 h-5 rounded-full border-2 border-indigo-500 flex items-center justify-center">
-                          <div className="w-2.5 h-2.5 rounded-full bg-indigo-500"></div>
+                        <div className="w-5 h-5 rounded-full border-2 border-blue-500 flex items-center justify-center">
+                          <div className="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
                         </div>
                       </div>
-                      <div className="text-sm text-zinc-300">
-                        Schedule user testing workshop for{" "}
-                        <span className="text-white font-medium">week 2</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start">
-                      <div className="mr-3 mt-0.5">
-                        <div className="w-5 h-5 rounded-full border-2 border-indigo-500 flex items-center justify-center">
-                          <div className="w-2.5 h-2.5 rounded-full bg-indigo-500"></div>
-                        </div>
-                      </div>
-                      <div className="text-sm text-zinc-300">
-                        Prepare budget breakdown for phase 2 features
+                      <div className="text-sm text-[#545454]">
+                        Preparar desglose de presupuesto para las funcionalidades de la fase 2
                       </div>
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button className="w-full bg-indigo-600 hover:bg-indigo-700">
+                    <Button className="w-full bg-[#000000] hover:bg-[#333333] text-white">
                       <Clipboard className="mr-2 h-4 w-4" />
-                      Add to Tasks
+                      Añadir a Tareas
                     </Button>
                   </CardFooter>
                 </Card>
@@ -742,55 +708,54 @@ export default function CallReport() {
 
           {/* Placeholder content for other tabs */}
           <TabsContent value="transcript" className="mt-6">
-            <Card className="bg-zinc-800/50 border-zinc-700">
+            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
               <CardHeader>
-                <CardTitle className="text-white">
-                  Full Conversation Transcript
+                <CardTitle className="text-[#000000]">
+                  Transcripción Completa
                 </CardTitle>
-                <CardDescription className="text-zinc-400">
-                  Complete text with sentiment analysis and highlights
+                <CardDescription className="text-[#545454]">
+                  Texto completo con análisis de sentimiento y destacados
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-sm text-zinc-400">
-                  [Transcript content would appear here with highlighted
-                  insights and timestamps]
+                <div className="text-sm text-[#545454]">
+                  [El contenido de la transcripción aparecería aquí con puntos destacados y marcas de tiempo]
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="insights" className="mt-6">
-            <Card className="bg-zinc-800/50 border-zinc-700">
+            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
               <CardHeader>
-                <CardTitle className="text-white">
-                  Detailed AI Analysis
+                <CardTitle className="text-[#000000]">
+                  Análisis Detallado de IA
                 </CardTitle>
-                <CardDescription className="text-zinc-400">
-                  In-depth insights from communication patterns
+                <CardDescription className="text-[#545454]">
+                  Perspectivas en profundidad de patrones de comunicación
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-sm text-zinc-400">
-                  [Detailed AI insights would appear here]
+                <div className="text-sm text-[#545454]">
+                  [El análisis detallado de IA aparecería aquí]
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="actions" className="mt-6">
-            <Card className="bg-zinc-800/50 border-zinc-700">
+            <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
               <CardHeader>
-                <CardTitle className="text-white">
-                  Action Items & Follow-up
+                <CardTitle className="text-[#000000]">
+                  Elementos de Acción y Seguimiento
                 </CardTitle>
-                <CardDescription className="text-zinc-400">
-                  Tasks and commitments from the call
+                <CardDescription className="text-[#545454]">
+                  Tareas y compromisos de la llamada
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-sm text-zinc-400">
-                  [Action items and follow-up tasks would appear here]
+                <div className="text-sm text-[#545454]">
+                  [Los elementos de acción y tareas de seguimiento aparecerían aquí]
                 </div>
               </CardContent>
             </Card>
