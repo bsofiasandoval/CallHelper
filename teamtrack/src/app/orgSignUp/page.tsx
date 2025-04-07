@@ -44,7 +44,6 @@ export default function OrgSignUp() {
     // Rest of the component remains the same...
     return (
         <div className="flex flex-col min-h-screen bg-black">
-            <NavigationBar />
 
             <div className="grid min-h-svh lg:grid-cols-2 bg-white">
                 <div className="flex flex-col gap-4 p-6 md:p-10">
